@@ -11,6 +11,7 @@ public class BookingPresenter implements ViewObserver {
 
     private Model model;
     private View view;
+    private Date reservationDate;
 
     public BookingPresenter(Model model, View view) {
         this.model = model;
@@ -42,6 +43,16 @@ public class BookingPresenter implements ViewObserver {
     }
 
     /**
+     * Отобразить результат перебронирования на представлении
+     * @param reservationId результат бронирования
+     * @param oldTableNo номер прошлого столика
+     * @param newTableNo номер нового столика
+     */
+    private void updateUIShowReservationResultAgain(int reservationId, int oldTableNo, int newTableNo){
+        view.showReservationTableResultAgain(reservationId, oldTableNo, newTableNo);
+    }
+
+    /**
      * Произошло событие, пользователь нажал на кнопку резерва столика
      * @param orderDate дата резерва
      * @param tableNo номер столика
@@ -60,15 +71,18 @@ public class BookingPresenter implements ViewObserver {
 
         /**
      * Произошло событие, пользователь нажал на кнопку смены столика
-     * @param orderDate дата резерва
-     * @param tableNo номер столика
+     * @param reservationDate дата резерва
+     * @param oldReservation прошлая бронь
+     * @param oldTableNo номер прошлого столика
+     * @param newTableNo номер нового столика
      * @param name имя клиента
      */
     @Override
-    public void onReservationTableAgain(Date orderDate, int OldTableNo, int newTableNo, String name) {
+    public void onReservationTableAgain(Date reservationDate, int oldReservation, int oldTableNo, int newTableNo, String name) {
+        this.reservationDate = reservationDate;
         try {
-            int reservationNo = model.reservationTable(orderDate, OldTableNo, name)-1;
-            updateUIShowReservationResult(reservationNo, newTableNo);
+            int reservationNo = model.changeReservationTable(oldReservation, reservationDate, oldTableNo, newTableNo, name)-1;
+            updateUIShowReservationResultAgain(reservationNo, oldTableNo, newTableNo);
         }
         catch (RuntimeException e){
             updateUIShowReservationResult(-1, -1);

@@ -53,26 +53,23 @@ public class TableModel implements Model {
      * Смена забронированного столика на столик с другим номером
      * @param oldReservation
      * @param reservationDate
-     * @param tableNo
+     * @param oldTableNo номер прошлого столика
+     * @param newTableNo номер нового столика
      * @param name
      * @return
      */
     public int changeReservationTable(int oldReservation, Date reservationDate, int oldTableNo, int newTableNo, String name){
         for (Table tableOld: loadTables()) {
-            if (tableOld.getNo() == oldTableNo){
-                if (tableOld.getBookingStatus() == true) { 
+            if (tableOld.getNo() == oldTableNo){ 
                     tableOld.setNewBookingStatus();
-                }
             }
         }
         for (Table table: loadTables()) {
             if (table.getNo() == newTableNo){
-                if (table.getBookingStatus() == true) { 
-                    table.setNewBookingStatus();
-                }
+                table.setNewBookingStatus();
                 Reservation reservation = new Reservation(reservationDate, name);
                 table.getReservations().add(reservation);
-                return reservation.getSameId(oldReservation);
+                return reservation.getId();
             }
         }
 

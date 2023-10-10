@@ -31,6 +31,16 @@ public class BookingView implements View {
         }
     }
 
+    @Override
+    public void showReservationTableResultAgain(int reservationId, int oldTableNo, int newTableNo) {
+        if (reservationId > 0){
+            System.out.printf("Столик №%d успешно забронирован взамен столика №%d. Номер вашей брони: #%d\n", newTableNo, oldTableNo, reservationId);
+        }
+        else {
+            System.out.println("Не удалось забронировать столик. Попробуйте повторить операцию позже.");
+        }
+    }
+
     /**
      * Действие клиента (пользователь нажал на кнопку бронирования), бронирование столика
      * @param orderDate дата бронирования
@@ -52,7 +62,7 @@ public class BookingView implements View {
      */
     public void changeReservationTable(int oldReservation, Date reservationDate, int oldTableNo, int newTableNo, String name){
         System.out.println("Вы поменяли столик на другой. Бронь за предыдущий столик аннулирована.");
-        observer.onReservationTableAgain(reservationDate, oldTableNo, newTableNo, name);
+        observer.onReservationTableAgain(reservationDate, oldReservation, oldTableNo, newTableNo, name);
     }
 
 }
