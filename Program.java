@@ -18,7 +18,10 @@ public class Program {
         presenter.updateUIShowTables();
         bookingView.changeReservationTable(1001, new Date(), 2, 3, "Станислав");
         presenter.updateUIShowTables();
-
+        bookingView.reservationTable(new Date(), 5, "Николай");
+        presenter.updateUIShowTables();
+        bookingView.changeReservationTable(1003, new Date(), 5, 1, "Николай");
+        presenter.updateUIShowTables();
     }
 
 }
